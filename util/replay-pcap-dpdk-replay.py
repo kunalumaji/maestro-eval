@@ -61,10 +61,7 @@ enable_jumbo: False
 nb_rx_queues: 16
 nb_rx_cores: 4
 stats:
-  - pci_id: {{sendport}}
-    file_name: "{{results_snd_port}}"
-  - pci_id: {{recvport}}
-    file_name: "{{results_rcv_port}}"
+{{stats}}
 send_port_pci: {{sendport}}
 enable_rest_server: False
 rest_server_port: 5000
@@ -99,10 +96,7 @@ enable_jumbo: False
 nb_rx_queues: {{num_rx_queues}}
 nb_rx_cores: 4
 stats:
-  - pci_id: {{sendport}}
-    file_name: "{{results_snd_port}}"
-  - pci_id: {{recvport}}
-    file_name: "{{results_rcv_port}}"
+{{stats}}
 send_port_pci: {{sendport}}
 enable_rest_server: False
 rest_server_port: 5000
@@ -128,6 +122,18 @@ def build_script_throughput(pcap, rate, cfg, duration_sec, warmup_duration_sec=D
     script = script.replace('{{duration}}', str(duration_sec + warmup_duration_sec))
     script = script.replace('{{results_snd_port}}', PKTGEN_RESULTS_SND_PORT)
     script = script.replace('{{results_rcv_port}}', PKTGEN_RESULTS_RCV_PORT)
+
+    stats = [
+        f'  - pci_id: {cfg["tx"]["dev"]}',
+        f'    file_name: "{PKTGEN_RESULTS_SND_PORT}"',
+    ]
+    if cfg['tx']['dev'] != cfg['rx']['dev']:
+        stats.extend([
+            f'  - pci_id: {cfg["rx"]["dev"]}',
+            f'    file_name: "{PKTGEN_RESULTS_RCV_PORT}"',
+        ])
+    script = script.replace('{{stats}}', '\n'.join(stats))
+
     # script = script.replace('{{n_to_send}}', str(n_to_send))
 
     numa = get_device_numa_node(cfg['tx']['dev'])
@@ -306,8 +312,12 @@ def run_pktgen(pcap, rate, cfg, duration_sec, lb=False, dry_run=False, verbose=F
     with open(results_snd_port_file, 'r') as file:
         snd_port_data = json.load(file)
 
-    with open(results_rcv_port_file, 'r') as file:
-        rcv_port_data = json.load(file)
+    same_port = cfg['tx']['dev'] == cfg['rx']['dev']
+    if same_port:
+        rcv_port_data = snd_port_data
+    else:
+        with open(results_rcv_port_file, 'r') as file:
+            rcv_port_data = json.load(file)
 
     total_rx_packets = 0
     total_rx_bytes = 0
@@ -323,9 +333,10 @@ def run_pktgen(pcap, rate, cfg, duration_sec, lb=False, dry_run=False, verbose=F
     # assert num_entries_rcv_data == duration_sec + DEFAULT_WARMUP_DURATION_SEC
 
     os.remove(PKTGEN_RESULTS_SND_PORT)
-    os.remove(PKTGEN_RESULTS_RCV_PORT)
     os.remove(results_snd_port_file)
-    os.remove(results_rcv_port_file)
+    if not same_port:
+        os.remove(PKTGEN_RESULTS_RCV_PORT)
+        os.remove(results_rcv_port_file)
 
     for entry in snd_port_data[DEFAULT_WARMUP_DURATION_SEC:]:
         total_tx_packets += int(entry['TX-packets'])
@@ -390,8 +401,6 @@ def get_cfg(tx_pcie_dev, rx_pcie_dev, num_tx_cores, num_rx_cores):
 
     tx_port  = get_port_from_pcie_dev(tx_pcie_dev)
     rx_port  = get_port_from_pcie_dev(rx_pcie_dev)
-
-    assert tx_port != rx_port
 
     print(f'[*] TX dev={tx_pcie_dev} port={tx_port} cores={tx_tx_cores}')
     print(f'[*] RX dev={rx_pcie_dev} port={rx_port} cores={rx_rx_cores}')
@@ -704,7 +713,7 @@ def main():
         elif args.find_stable_throughput_fast:
             data = search_throughput_fast(pcap, cfg, args.duration, args.iterations, lb=args.lb, dry_run=args.dry_run, verbose=args.v, scr=args.scr, num_rx_queues=args.num_rx_queues, start_rate=args.start_rate)
         else:
-            data = run_pktgen(pcap, cfg, args.rate, args.duration, lb=args.lb, dry_run=args.dry_run, verbose=args.v, scr=args.scr, num_rx_queues=args.num_rx_queues)
+            data = run_pktgen(pcap, args.rate, cfg, args.duration, lb=args.lb, dry_run=args.dry_run, verbose=args.v, scr=args.scr, num_rx_queues=args.num_rx_queues)
 
         save_throughput_data(data)
 
