@@ -38,15 +38,7 @@ DPDK_BURST_REPLAY_CONFIG_TEMPLATE = \
 ---
 traces: 
   - path: "{{pcap}}"
-    tx_queues: 8
-  - path: "{{pcap}}"
-    tx_queues: 8
-  - path: "{{pcap}}"
-    tx_queues: 8
-  - path: "{{pcap}}"
-    tx_queues: 8
-  - path: "{{pcap}}"
-    tx_queues: 8
+    tx_queues: 2
 numacore: {{numacore}}
 nbruns: -1
 timeout: {{duration}}
@@ -58,8 +50,8 @@ slow_mode: False
 convert_to_json: True
 use_mac_filter: False
 enable_jumbo: False
-nb_rx_queues: 16
-nb_rx_cores: 4
+nb_rx_queues: 1
+nb_rx_cores: 1
 stats:
 {{stats}}
 send_port_pci: {{sendport}}
@@ -73,15 +65,7 @@ DPDK_BURST_REPLAY_CONFIG_TEMPLATE_SCR = \
 ---
 traces: 
   - path: "{{pcap}}"
-    tx_queues: 8
-  - path: "{{pcap}}"
-    tx_queues: 8
-  - path: "{{pcap}}"
-    tx_queues: 8
-  - path: "{{pcap}}"
-    tx_queues: 8
-  - path: "{{pcap}}"
-    tx_queues: 8
+    tx_queues: 2
 numacore: {{numacore}}
 nbruns: -1
 timeout: {{duration}}
@@ -93,8 +77,8 @@ slow_mode: False
 convert_to_json: True
 use_mac_filter: True
 enable_jumbo: False
-nb_rx_queues: {{num_rx_queues}}
-nb_rx_cores: 4
+nb_rx_queues: 1
+nb_rx_cores: 1
 stats:
 {{stats}}
 send_port_pci: {{sendport}}

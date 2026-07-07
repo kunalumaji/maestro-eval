@@ -27,14 +27,14 @@ DUT_SCR_DIR=${DUT_EVAL_DIR}/scr-nfs/nf-no-expire
 DUT_MLNX_SYNT_DIR=${DUT_EVAL_DIR}/synthesized-mlnx/nf-no-expire-tx-queues
 DUT_MLNX_OTHERS_SYNT_DIR=${DUT_EVAL_DIR}/synthesized-mlnx/original-nf-tx-queues
 
-TG_TX_DEV="0000:51:00.0" # FIXME: TX PCIe device on the TG
-TG_RX_DEV="0000:51:00.1" # FIXME: RX PCIe device on the TG
+TG_TX_DEV="0000:03:00.1" # FIXME: TX PCIe device on the TG
+TG_RX_DEV="0000:03:00.1" # FIXME: RX PCIe device on the TG
 
 DUT_TX_DEV="0000:51:00.1" # FIXME: TX PCIe device on the DUT
 DUT_RX_DEV="0000:51:00.0" # FIXME: RX PCIe device on the DUT
 
-PCAP_SRC_MAC="b8:3f:d2:13:08:42"
-PCAP_DST_MAC="b8:3f:d2:13:08:43"
+PCAP_SRC_MAC="9c:dc:71:5d:d5:b1"
+PCAP_DST_MAC="9c:dc:71:5e:0f:91"
 
 TG_TX_CORES=6
 TG_RX_CORES=6

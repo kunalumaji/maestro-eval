@@ -1,0 +1,80 @@
+[*] PCIe=0000:03:00.1 NUMA=0 CPUs=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+[*] PCIe=0000:03:00.1 NUMA=0 CPUs=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+[*] TX dev=0000:03:00.1 port=1 cores=[2, 3]
+[*] RX dev=0000:03:00.1 port=1 cores=[5, 6]
+[*] Master core=[0]
+[*] Replaying at 25.0% linerate
+[*] Replaing at 25000 Mbps
+[*] DPDK replay command: sudo /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/build/src/dpdk-replay --config /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/src/config.yaml
+[*] DPDK replay finished with code 0
+[*] TX   31.32 Mpps 21.45 Gbps
+[*] RX   13.86 Mpps 9.49 Gbps
+[*] loss 55.73%
+[*] Replaying at 12.5% linerate
+[*] Replaing at 12500 Mbps
+[*] DPDK replay command: sudo /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/build/src/dpdk-replay --config /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/src/config.yaml
+[*] DPDK replay finished with code 0
+[*] TX   18.46 Mpps 12.64 Gbps
+[*] RX   14.16 Mpps 9.70 Gbps
+[*] loss 23.28%
+[*] Replaying at 6.25% linerate
+[*] Replaing at 6250 Mbps
+[*] DPDK replay command: sudo /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/build/src/dpdk-replay --config /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/src/config.yaml
+[*] DPDK replay finished with code 0
+[*] TX   9.20 Mpps 6.30 Gbps
+[*] RX   9.08 Mpps 6.22 Gbps
+[*] loss 1.23%
+[*] Replaying at 3.125% linerate
+[*] Replaing at 3125 Mbps
+[*] DPDK replay command: sudo /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/build/src/dpdk-replay --config /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/src/config.yaml
+[*] DPDK replay finished with code 0
+[*] TX   4.60 Mpps 3.15 Gbps
+[*] RX   4.59 Mpps 3.14 Gbps
+[*] loss 0.26%
+[*] Replaying at 4.6875% linerate
+[*] Replaing at 4687 Mbps
+[*] DPDK replay command: sudo /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/build/src/dpdk-replay --config /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/src/config.yaml
+[*] DPDK replay finished with code 0
+[*] TX   6.90 Mpps 4.72 Gbps
+[*] RX   6.84 Mpps 4.68 Gbps
+[*] loss 0.81%
+[*] Replaying at 3.90625% linerate
+[*] Replaing at 3906 Mbps
+[*] DPDK replay command: sudo /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/build/src/dpdk-replay --config /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/src/config.yaml
+[*] DPDK replay finished with code 0
+[*] TX   5.76 Mpps 3.94 Gbps
+[*] RX   5.73 Mpps 3.92 Gbps
+[*] loss 0.44%
+[*] Replaying at 3.515625% linerate
+[*] Replaing at 3515 Mbps
+[*] DPDK replay command: sudo /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/build/src/dpdk-replay --config /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/src/config.yaml
+[*] DPDK replay finished with code 0
+[*] TX   5.17 Mpps 3.54 Gbps
+[*] RX   5.15 Mpps 3.53 Gbps
+[*] loss 0.36%
+[*] Replaying at 3.7109375% linerate
+[*] Replaing at 3710 Mbps
+[*] DPDK replay command: sudo /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/build/src/dpdk-replay --config /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/src/config.yaml
+[*] DPDK replay finished with code 0
+[*] TX   5.47 Mpps 3.74 Gbps
+[*] RX   5.44 Mpps 3.73 Gbps
+[*] loss 0.43%
+[*] Replaying at 3.61328125% linerate
+[*] Replaing at 3613 Mbps
+[*] DPDK replay command: sudo /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/build/src/dpdk-replay --config /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/src/config.yaml
+[*] DPDK replay finished with code 0
+[*] TX   5.32 Mpps 3.64 Gbps
+[*] RX   5.30 Mpps 3.63 Gbps
+[*] loss 0.32%
+[*] Replaying at 3.662109375% linerate
+[*] Replaing at 3662 Mbps
+[*] DPDK replay command: sudo /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/build/src/dpdk-replay --config /users/kunalbob/maestro-eval/util/../build/dpdk-burst-replay/src/config.yaml
+[*] DPDK replay finished with code 0
+[*] TX   5.39 Mpps 3.69 Gbps
+[*] RX   5.38 Mpps 3.68 Gbps
+[*] loss 0.31%
+
+[*] Best results:
+[*]   TX:   5.39 Mpps 3.69 Gbps
+[*]   RX:   5.38 Mpps 3.68 Gbps
+[*]   loss: 0.31 %
