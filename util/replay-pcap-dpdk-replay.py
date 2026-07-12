@@ -20,7 +20,7 @@ RESULTS_FILENAME         = "results.csv"
 
 MIN_RATE             = 0   # Gbps
 MAX_RATE             = 100 # Gbps
-LOSS_THRESHOLD       = 0.4 # %
+LOSS_THRESHOLD       = 0.01 # %
 CHECKING_ERROR       = 0.1 # relative error
 
 DEFAULT_TX_CORES            = 2
@@ -357,9 +357,9 @@ def run_pktgen(pcap, rate, cfg, duration_sec, lb=False, dry_run=False, verbose=F
         'loss': float(pkt_loss) * 100,
     }
 
-    print(f"[*] TX   {data['tx']['pkt_rate']:3.2f} Mpps {data['tx']['rate']:3.2f} Gbps")
-    print(f"[*] RX   {data['rx']['pkt_rate']:3.2f} Mpps {data['rx']['rate']:3.2f} Gbps")
-    print(f"[*] loss {data['loss']:3.2f}%")
+    print(f"[*] TX   {data['tx']['pkt_rate']:3.4f} Mpps {data['tx']['rate']:3.4f} Gbps")
+    print(f"[*] RX   {data['rx']['pkt_rate']:3.4f} Mpps {data['rx']['rate']:3.4f} Gbps")
+    print(f"[*] loss {data['loss']:3.4f}%")
 
     return data
 
@@ -487,7 +487,7 @@ def search_throughput_fast(pcap, cfg, duration_sec, iterations, lb=False, dry_ru
         upper_bound = min(100.0, observed_rx_rate * upper_factor)
         mid_rate = (lower_bound + upper_bound) / 2
 
-        print(f"[*] Updated search range: lower={lower_bound:.2f}%, upper={upper_bound:.2f}%, mid={mid_rate:.2f}%")
+        print(f"[*] Updated search range: lower={lower_bound:.4f}%, upper={upper_bound:.4f}%, mid={mid_rate:.4f}%")
 
         # Update best result if loss is below threshold
         if loss < LOSS_THRESHOLD and data["rx"]["rate"] > best_rx_rate:
@@ -504,9 +504,9 @@ def search_throughput_fast(pcap, cfg, duration_sec, iterations, lb=False, dry_ru
 
     print()
     print("[*] Best results:")
-    print(f'[*]   TX:   {best_data["tx"]["pkt_rate"]:3.2f} Mpps {best_data["tx"]["rate"]:3.2f} Gbps')
-    print(f'[*]   RX:   {best_data["rx"]["pkt_rate"]:3.2f} Mpps {best_data["rx"]["rate"]:3.2f} Gbps')
-    print(f'[*]   loss: {best_data["loss"]:.2f} %')
+    print(f'[*]   TX:   {best_data["tx"]["pkt_rate"]:3.4f} Mpps {best_data["tx"]["rate"]:3.4f} Gbps')
+    print(f'[*]   RX:   {best_data["rx"]["pkt_rate"]:3.4f} Mpps {best_data["rx"]["rate"]:3.4f} Gbps')
+    print(f'[*]   loss: {best_data["loss"]:.4f} %')
 
     return best_data
 
@@ -589,9 +589,9 @@ def search_throughput(pcap, cfg, duration_sec, iterations, lb=False, dry_run=Fal
 
     print()
     print( "[*] Best results:")
-    print(f'[*]   TX:   {best_data["tx"]["pkt_rate"]:3.2f} Mpps {best_data["tx"]["rate"]:3.2f} Gbps')
-    print(f'[*]   RX:   {best_data["rx"]["pkt_rate"]:3.2f} Mpps {best_data["rx"]["rate"]:3.2f} Gbps')
-    print(f'[*]   loss: {best_data["loss"]:.2f} %')
+    print(f'[*]   TX:   {best_data["tx"]["pkt_rate"]:3.4f} Mpps {best_data["tx"]["rate"]:3.4f} Gbps')
+    print(f'[*]   RX:   {best_data["rx"]["pkt_rate"]:3.4f} Mpps {best_data["rx"]["rate"]:3.4f} Gbps')
+    print(f'[*]   loss: {best_data["loss"]:.4f} %')
 
     return best_data
 
