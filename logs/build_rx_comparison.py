@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Combine gather/simd mean RX rate per memory load into one CSV and plot."""
+"""Combine gather/simd mean & median RX rate per memory load into one CSV and plot."""
 
 from __future__ import annotations
 
 import csv
+import statistics
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -21,12 +22,39 @@ def load_mean_rx_mpps(mode: str) -> dict[str, float]:
     return {row["Size"]: float(row["RX Rate"].split()[0]) for row in rows}
 
 
-def write_combined_csv(gather: dict[str, float], simd: dict[str, float], out_path: Path) -> None:
+def load_median_rx_mpps(mode: str) -> dict[str, float]:
+    medians = {}
+    for size in SIZES:
+        with (HERE / mode / f"{size}.csv").open() as stream:
+            rows = list(csv.DictReader(stream))
+        medians[size] = statistics.median(float(row["RX Rate"].split()[0]) for row in rows)
+    return medians
+
+
+def write_combined_csv(
+    mean_gather: dict[str, float],
+    mean_simd: dict[str, float],
+    median_gather: dict[str, float],
+    median_simd: dict[str, float],
+    out_path: Path,
+) -> None:
     with out_path.open("w", newline="") as stream:
         writer = csv.writer(stream)
-        writer.writerow(("Memory Load", "Gather Mean RX Rate (Mpps)", "SIMD Mean RX Rate (Mpps)"))
+        writer.writerow((
+            "Memory Load",
+            "Gather Mean RX Rate (Mpps)",
+            "SIMD Mean RX Rate (Mpps)",
+            "Gather Median RX Rate (Mpps)",
+            "SIMD Median RX Rate (Mpps)",
+        ))
         for size in SIZES:
-            writer.writerow((size, f"{gather[size]:.4f}", f"{simd[size]:.4f}"))
+            writer.writerow((
+                size,
+                f"{mean_gather[size]:.4f}",
+                f"{mean_simd[size]:.4f}",
+                f"{median_gather[size]:.4f}",
+                f"{median_simd[size]:.4f}",
+            ))
 
 
 def style_axis(ax: plt.Axes) -> None:
@@ -34,7 +62,9 @@ def style_axis(ax: plt.Axes) -> None:
     ax.spines[["top", "right"]].set_visible(False)
 
 
-def plot_comparison(gather: dict[str, float], simd: dict[str, float], out_path: Path) -> None:
+def plot_comparison(
+    gather: dict[str, float], simd: dict[str, float], stat: str, out_path: Path
+) -> None:
     fig, ax = plt.subplots(figsize=(7.2, 4.8))
     x = range(len(SIZES))
     for mode, data in (("gather", gather), ("simd", simd)):
@@ -43,8 +73,8 @@ def plot_comparison(gather: dict[str, float], simd: dict[str, float], out_path: 
                 linewidth=1.8, label=LABELS[mode])
     ax.set_xticks(list(x), SIZES)
     ax.set_xlabel("Memory load")
-    ax.set_ylabel("Mean RX rate (Mpps)")
-    ax.set_title("SIMD vs. Software Gather: mean RX rate across memory loads")
+    ax.set_ylabel(f"{stat} RX rate (Mpps)")
+    ax.set_title(f"SIMD vs. Software Gather: {stat.lower()} RX rate across memory loads")
     ax.legend(frameon=False)
     style_axis(ax)
     fig.tight_layout()
@@ -54,12 +84,19 @@ def plot_comparison(gather: dict[str, float], simd: dict[str, float], out_path: 
 
 
 def main() -> None:
-    gather = load_mean_rx_mpps("gather")
-    simd = load_mean_rx_mpps("simd")
-    write_combined_csv(gather, simd, HERE / "rx_rate_comparison.csv")
-    plot_comparison(gather, simd, HERE / "rx_rate_comparison")
+    mean_gather = load_mean_rx_mpps("gather")
+    mean_simd = load_mean_rx_mpps("simd")
+    median_gather = load_median_rx_mpps("gather")
+    median_simd = load_median_rx_mpps("simd")
+
+    write_combined_csv(mean_gather, mean_simd, median_gather, median_simd,
+                        HERE / "rx_rate_comparison.csv")
+    plot_comparison(mean_gather, mean_simd, "Mean", HERE / "rx_rate_comparison_mean")
+    plot_comparison(median_gather, median_simd, "Median", HERE / "rx_rate_comparison_median")
+
     print(f"Wrote {HERE / 'rx_rate_comparison.csv'}")
-    print(f"Wrote {HERE / 'rx_rate_comparison.png'} and .pdf")
+    print(f"Wrote {HERE / 'rx_rate_comparison_mean.png'} and .pdf")
+    print(f"Wrote {HERE / 'rx_rate_comparison_median.png'} and .pdf")
 
 
 if __name__ == "__main__":
