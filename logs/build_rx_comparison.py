@@ -10,7 +10,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 HERE = Path(__file__).parent
-SIZES = ("M1", "M4", "M8", "M12", "M16")
+SIZES = ("M1", "M2", "M4", "M6", "M8", "M10", "M12", "M14", "M16")
 COLORS = {"gather": "#4477AA", "simd": "#228833"}
 MARKERS = {"gather": "s", "simd": "^"}
 LABELS = {"gather": "Software Gather", "simd": "SIMD"}
